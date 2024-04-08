@@ -22,7 +22,6 @@ class CreateRoomView(APIView):
         serializer = self.serializer_class(data=request.data)
         # Check to see if we have data needed
         if serializer.is_valid():
-            guest_can_vote = serializer.data.get("guest_can_vote")
             public = serializer.data.get("public")
             # Get session key of host
             host = self.request.session.session_key
@@ -31,12 +30,11 @@ class CreateRoomView(APIView):
             # If host already has room update room settings
             if queryset.exists():
                 room = queryset[0]
-                room.guest_can_vote = guest_can_vote
                 room.public = public
                 # Save room and force to update specified fields
-                room.save(update_fields=['guest_can_vote', 'public'])
+                room.save(update_fields=['public'])
             else:
-                room = Room(host=host, guest_can_vote=guest_can_vote, public=public)
+                room = Room(host=host, public=public)
                 room.save()
 
         return Response(RoomSerializer(room).data, status=status.HTTP_201_CREATED)

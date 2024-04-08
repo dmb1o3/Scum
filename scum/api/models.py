@@ -15,6 +15,5 @@ def generate_unique_room_id():
 class Room(models.Model):
     room_id = models.CharField(max_length=8, default=generate_unique_room_id, unique=True)
     host = models.CharField(max_length=50, unique=True)
-    guest_can_vote = models.BooleanField(null=False, default=False)
     public = models.BooleanField(null=False, default=False)
     created_at = models.DateTimeField(auto_now_add=True)
